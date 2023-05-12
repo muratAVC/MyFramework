@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.IntStream;
 
 public class DataBaseUtilities {
     private static Connection connection;
@@ -135,6 +136,24 @@ public class DataBaseUtilities {
         return getQueryResultsetList(query).get(0).get(0);
     }
 
-
+    public static List<Object> getColumnName(String query) throws SQLException {
+        executeQuery(query);
+        List<Object> result=new ArrayList<>();
+        IntStream.rangeClosed(1, resultSet.getMetaData().getColumnCount())
+                .mapToObj(i -> {
+                    try {
+                        return resultSet.getObject(i);
+                    } catch (SQLException e) {
+                        throw new RuntimeException(e);
+                    }
+                })
+                .forEach(result::add);
+        /*
+        ResultSetMetaData setMetaData=resultSet.getMetaData();
+        for (int i = 1; i <= setMetaData.getColumnCount(); i++) {
+            result.add(resultSet.getObject(i));
+        }*/
+        return result;
+    }
 
 }
