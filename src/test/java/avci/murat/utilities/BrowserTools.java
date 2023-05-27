@@ -165,6 +165,11 @@ public class BrowserTools {
         jse.executeScript("arguments[0].scrollIntoView(true);",element);
     }
 
+    public static boolean isBig(double x, double y){
+        if (x>y) return true;
+        else return false;
+    }
+
     public static void doubleClick(WebElement element){
         Actions actions=new Actions(Driver.getWebDriver());
         actions.doubleClick(element).build().perform();
