@@ -41,3 +41,12 @@ AC: The table should not display any price which is more than 20 and less than 1
   Scenario: Coin market
     Given The user should be able to click Filters
     And verify all price
+
+        @Testt
+  Scenario: Create contact using a map o  Left side is key, and right is value   2 columns only
+    Given I logged into suiteCRM
+    When I create a new contact:
+  | first_name | John  |
+  | last_name  | Smith  |
+  | cell_phone | 801 888 8889  |
+  Then I should see contact information for "John Smith"

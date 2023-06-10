@@ -8,10 +8,13 @@ import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import java.io.File;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class BrowserTools {
 
@@ -170,6 +173,13 @@ public class BrowserTools {
         else return false;
     }
 
+    public static boolean isCorrectEmailFormat(String email){
+        String emailDeseni = "^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$";
+        Pattern pattern = Pattern.compile(emailDeseni);
+        Matcher matcher = pattern.matcher(email);
+        return matcher.matches();
+    }
+
     public static void doubleClick(WebElement element){
         Actions actions=new Actions(Driver.getWebDriver());
         actions.doubleClick(element).build().perform();
@@ -240,10 +250,15 @@ public class BrowserTools {
         new WebDriverWait(Driver.getWebDriver(), Duration.ofSeconds(time)).until(ExpectedConditions.presenceOfElementLocated(by));
     }
 
-public static void screenShoot(Scenario scenario){
-    final byte[] screenshot = ((TakesScreenshot) Driver.getWebDriver()).getScreenshotAs(OutputType.BYTES);
-    scenario.attach(screenshot,"image/png","screenshot");
-}
+    public static void screenShoot(Scenario scenario){
+        final byte[] screenshot = ((TakesScreenshot) Driver.getWebDriver()).getScreenshotAs(OutputType.BYTES);
+        scenario.attach(screenshot,"image/png","screenshot");
+    }
+
+    public static boolean verifyFileDownloaded(String path){
+        File file=new File(path);
+        return file.exists();
+    }
 
 
 }

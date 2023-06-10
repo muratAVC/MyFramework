@@ -1,5 +1,6 @@
 Feature: Users Google page Search to it is wants
 
+  @Google
   Scenario: As a user search
     Given user open google page
     And user write to "zalim" in search box
