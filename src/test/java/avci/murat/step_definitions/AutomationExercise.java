@@ -45,6 +45,7 @@ public class AutomationExercise {
 
     @And("Click on arrow at bottom right side to move upward")
     public void clickOnArrowAtBottomRightSideToMoveUpward() {
+        BrowserTools.scrollToElement(autoEPage.upButton);
         autoEPage.upButton.click();
     }
 

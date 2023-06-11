@@ -14,7 +14,7 @@ import org.junit.runner.RunWith;
         features ="src/test/resources/features",
         glue="avci/murat/step_definitions",
         dryRun = false,
-        tags = "@AutoExCase24"
+        tags = "@AutoExCase25"
 )
 
 public class Runner {

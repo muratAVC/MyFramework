@@ -10,8 +10,6 @@ Feature: Automation Exercise Practice
   And Scroll up page to top
   When Verify "Full-Fledged practice website for Automation Engineers" text is visible on screen
 
-
-
   @AutoExCase25
   Scenario:  Automation Exercise test case 25
   Given Navigate to url 'http://automationexercise.com'
@@ -20,7 +18,6 @@ Feature: Automation Exercise Practice
   And Verify 'SUBSCRIPTION' is visible
   And Click on arrow at bottom right side to move upward
   When Verify "Full-Fledged practice website for Automation Engineers" text is visible on screen
-
 
   @AutoExCase24
   Scenario: Automation Exercise test case 24
