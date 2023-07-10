@@ -80,6 +80,18 @@ public class CoinPage {
     @FindBy(css = "div[class*='hfka'] button:nth-child(1)")
     public WebElement showResultButton;
 
+    @FindBy(xpath = "//span[contains(@class,'bKdJUK')]//button[2]")
+    public WebElement customizeButton;
+
+    @FindBy(xpath = "//div[contains(@class,'jINBuN')]/div")
+    public WebElement chooseUPButton;
+
+    @FindBy(xpath = "//div[contains(@class,'jINBuN')]/div/div[2]/div/div")
+    public List<WebElement> chooseUPList;
+
+
+
+
 
 
 

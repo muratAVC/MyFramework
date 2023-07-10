@@ -55,6 +55,36 @@ public class DataBaseUtilities {
         }
     }
 
+    public static void insertData(List<Object> user) {
+        try {
+            //PreparedStatement statement = connection.prepareStatement(importQuery);
+            //statement.setInt(1, (int)user.get(0));
+            String id= user.get(0).toString();
+            //statement.setString(2, user.get(1).toString());
+            String firstName=(String) user.get(1);
+            //statement.setString(3, user.get(2).toString());
+            String lastName=(String) user.get(2);
+            //statement.setString(4,user.get(3).toString());
+            String adress=(String) user.get(3);
+            //statement.setString(5,user.get(4).toString());
+            String city=(String) user.get(4);
+            //statement.setString(6,user.get(5).toString());
+            String category=(String) user.get(5);
+            //statement.executeUpdate();
+            String importQuery="INSERT INTO yazar (id_no, first_name, last_name, adress, city, category) VALUES ("+id+", "+firstName+", "+lastName+", "+adress+", "+city+", "+category+")";
+            System.out.println(importQuery);
+            connection.createStatement().executeUpdate(importQuery);
+
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+
+
+
+
+    }
+
+
     public static List<List<Object>> getQueryResultsetList(String query){
         executeQuery(query);
         List<List<Object>> result=new ArrayList<>();
