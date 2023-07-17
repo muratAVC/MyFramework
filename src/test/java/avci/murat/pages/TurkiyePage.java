@@ -7,6 +7,7 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
 import java.sql.DriverManager;
+import java.util.List;
 
 public class TurkiyePage {
 
@@ -35,8 +36,18 @@ public class TurkiyePage {
     @FindBy(xpath = "//a[@class='logout']")
     public WebElement safeExit;
 
+///--youtube alanı
+    @FindBy(xpath = "//img[contains(@class,'yt-core-image')]")
+    public List<WebElement> videoImages;
 
+    @FindBy(id="search")
+    public WebElement searchArea;
 
+    @FindBy(id = "search-icon-legacy")
+    public WebElement searchButton;
+
+    @FindBy(xpath = "//*[@id=\"tabsContent\"]/tp-yt-paper-tab[2]/div")
+    public WebElement videos;
 
 
 }
