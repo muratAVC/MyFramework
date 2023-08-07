@@ -10,11 +10,7 @@ Scenario:As a citizen, I should be able to successfully log in and out of turkiy
   And Verify that Sign in to your account appears
   And Enter the correct username and password
   And Click the Sign In button
-  And Verify that Logged in as username is visible
+  And Verify that Logged in as username is visible1
   And Click the Safe Exit button
   Then Verify that the user is redirected to the login page
 
-  Scenario: Get the latest video's picture from the videos tab on any youtube channel
-  Given open browser and go to youtube channel
-  When go to the videos tab
-  And find the latest video and get your picture

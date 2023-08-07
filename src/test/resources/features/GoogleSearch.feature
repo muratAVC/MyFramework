@@ -7,3 +7,10 @@ Feature: Users Google page Search to it is wants
     And user click to search button or enter key
     And user read to result
 
+  Scenario: Send Google mail
+    Given open browser and goto google.mail page
+    Then open new mail page
+    And write email informations
+    And write email details
+    And send email
+

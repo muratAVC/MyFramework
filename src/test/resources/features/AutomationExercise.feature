@@ -1,6 +1,84 @@
 @AutoEx
 Feature: Automation Exercise Practice
 
+  @AutoExCase01
+  Scenario: Automation Exercise Practice Test Case 1
+  Given Navigate to url 'http://automationexercise.com'
+  And Verify that home page is visible successfully
+  And Click Signup-Login button
+  And Verify New User Signup! is visible
+  And Enter name and email address
+  And Click Signup button
+  And Verify that ENTER ACCOUNT INFORMATION is visible
+  And Fill details: Title, Name, Email, Password, Date of birth
+  And Select checkbox Sign up for our newsletter!
+  And Select checkbox Receive special offers from our partners!
+#  And Fill details: First name, Last name, Company, Address, Address2, Country, State, City, Zipcode, Mobile Number
+  And Click Create Account button
+  And Verify that ACCOUNT CREATED! is visible
+  And Click Continue button
+  And Verify that Logged in as username is visible in Auto
+  And Click Delete Account button
+  And Verify that ACCOUNT DELETED! is visible and click Continue button
+
+    @AutoExCase02
+  Scenario: Automation Exercize Practice 2
+  Given Navigate to url 'http://automationexercise.com'
+  And Verify that home page is visible successfully
+  And Click Signup-Login button
+  And Verify Login to your account is visible
+  And Enter correct email address and password
+#  And Click login button
+  And Verify that Logged in as user name is visible
+  And Click Delete Account button
+  And Verify that ACCOUNT DELETED! is visible and click Continue button
+
+      @SignUp
+  Scenario: Sign up Automation exercise
+    Given Sign up
+
+    @AutoExCase03
+Scenario Outline: Automation Exercise testCase 3
+Given Navigate to url 'http://automationexercise.com'
+And Verify that home page is visible successfully
+And Click Signup-Login button
+And Verify Login to your account is visible
+And Enter incorrect "<email>" address and "<password>"
+#And Click login button
+And Verify error Your email or password is incorrect! is visible
+
+      Examples: informations
+        | email             | password |
+        | cartcurt@mail.com | 1235685  |
+        |murat@gmail.com    |6416856   |
+
+@AutoExCase04
+  Scenario: Automation exercise test case 4
+  Given Navigate to url 'http://automationexercise.com'
+  And Verify that home page is visible successfully
+  And Click Signup-Login button
+  And Verify Login to your account is visible
+  And Enter correct email address and password
+  #And Click login button
+  And Verify that Logged in as username is visible
+  And Click Logout button
+  And Verify that user is navigated to login page
+
+  @AutoExCase05
+  Scenario: Automation Exercise Test Case  Register User with existing email
+  Given Navigate to url 'http://automationexercise.com'
+  And Verify that home page is visible successfully
+  And Click Signup-Login button
+  And Verify New User Signup! is visible
+  And Enter name and already registered email address
+  And Click Signup button
+  And Verify error Email Address already exist! is visible
+
+
+
+
+
+
   @AutoExCase26
   Scenario: Automation Exercise test case 26
   Given Navigate to url "http://automationexercise.com"
@@ -42,3 +120,55 @@ Feature: Automation Exercise Practice
   And Click Continue button
   And Click Delete Account button
   And Verify ACCOUNT DELETED! and click Continue button
+
+
+  @AutoExCase23
+    Scenario: Automation exercize trst case 23
+    Given Navigate to url 'http://automationexercise.com'
+    And Verify that home page is visible successfully
+    And Click Signup-Login button
+    And Fill all details in Signup and create account
+    And Verify ACCOUNT CREATED! and click Continue button
+    And Verify  Logged in as username at top
+    And Add products to cart
+    And Click Cart button
+    And Verify that cart page is displayed
+    And Click Proceed To Checkout
+    And Verify that the delivery address is same address filled at the time registration of account
+    And Verify that the billing address is same address filled at the time registration of account
+    And Click Delete Account button
+    And Verify ACCOUNT DELETED! and click Continue button
+
+  @AutoExCase22
+  Scenario: Automation exercize Test case 22
+  Given Navigate to url 'http://automationexercise.com'
+  And Scroll to bottom of page
+  And Verify RECOMMENDED ITEMS are visible
+  And Click on Add To Cart on Recommended product
+  And Verify that product is displayed in cart page
+
+    @AutoExCase21
+    Scenario: Add review on product
+    Given Navigate to url 'http://automationexercise.com'
+    And Click on Products button
+    And Verify user is navigated to ALL PRODUCTS page successfully
+    And Click on View Product button
+    And Verify Write Your Review is visible
+    And Enter name, email and review
+    And Click Submit button
+    And Verify success message Thank you for your review.
+
+
+      @AutoExCase20
+  Scenario: Search Products and Verify Cart After Login
+  Given Navigate to url 'http://automationexercise.com'
+  And Click on Products button
+  And Verify user is navigated to ALL PRODUCTS page successfully
+  And Enter product name in search input and click search button
+  And Verify SEARCHED PRODUCTS is visible
+  And Verify all the products related to search are visible
+  And Add those products to cart
+  And Click Cart button and verify that products are visible in cart
+  And Click Signup Login button and submit login details
+  And Again, go to Cart page
+  And Verify that those products are visible in cart after login as well

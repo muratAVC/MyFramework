@@ -52,10 +52,12 @@ public class Turkiye_SDef {
     public void click_the_sign_in_button() {
         tpage.submitButton.click();
     }
-    @When("Verify that Logged in as username is visible")
-    public void verify_that_logged_in_as_username_is_visible() {
+
+    @When("Verify that Logged in as username is visible1")
+    public void verify_that_logged_in_as_username_is_visible1() {
         Assert.assertTrue(tpage.userMenu.isDisplayed());
     }
+
     @When("Click the Safe Exit button")
     public void click_the_safe_exit_button() {
         tpage.nameButton.click();
@@ -69,24 +71,4 @@ public class Turkiye_SDef {
     }
 
 
-    @Given("open browser and go to youtube channel")
-    public void openBrowserAndGoToYoutubeChannel() {
-        Driver.getWebDriver().navigate().to("https://www.youtube.com/@PythonSimplified");
-    }
-
-    @When("go to the videos tab")
-    public void goToTheVideosTab() {
-        tpage.videos.click();
-    }
-
-    @And("find the latest video and get your picture")
-    public void findTheLatestVideoAndGetYourPicture() throws IOException {
-        //String imageURL=tpage.videoImages.get(0).getAttribute("src");
-        WebElement element=tpage.videoImages.get(0);
-        String imageURL= element.getAttribute("src");
-        System.out.println("selam"+imageURL);
-        URL imgURL=new URL(imageURL);
-        BufferedImage sevaImage= ImageIO.read(imgURL);
-        ImageIO.write(sevaImage,"png",new File("\\resim.png"));
-    }
 }

@@ -5,6 +5,7 @@ import avci.murat.utilities.BrowserTools;
 import avci.murat.utilities.ConfigurationReader;
 import avci.murat.utilities.CustomTestListener;
 import avci.murat.utilities.Driver;
+import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
@@ -55,5 +56,33 @@ public class GoogleStepDef {
     @Then("I should see contact information for {string}") @Test(invocationCount = 5)
     public void iShouldSeeContactInformationFor(String arg0) {
         System.out.println(arg0);
+    }
+
+    @Given("open browser and goto google.mail page")
+    public void openBrowserAndGotoGoogleMailPage() {
+        Driver.getWebDriver().navigate().to("https://mail.google.com");
+        googlePage.inputNameBox.sendKeys("muratriyum@gmail.com");
+        googlePage.nextButtonN.click();
+        googlePage.passBox.sendKeys("514758_MA_google");
+        googlePage.nextButtonP.click();
+    }
+
+    @Then("open new mail page")
+    public void openNewMailPage() {
+        
+    }
+
+    @And("write email informations")
+    public void writeEmailInformations() {
+        
+    }
+
+    @And("write email details")
+    public void writeEmailDetails() {
+        
+    }
+
+    @And("send email")
+    public void sendEmail() {
     }
 }
