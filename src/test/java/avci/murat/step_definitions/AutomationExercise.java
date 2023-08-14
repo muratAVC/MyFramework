@@ -3,17 +3,24 @@ package avci.murat.step_definitions;
 import avci.murat.pages.AutomationExercisePage;
 import avci.murat.utilities.BrowserTools;
 import avci.murat.utilities.Driver;
-import com.beust.ah.A;
+
 import com.github.javafaker.Faker;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.When;
+
+import io.restassured.internal.common.assertion.AssertionSupport;
+import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
-import org.openqa.selenium.support.ui.Select;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 
+
+import java.time.Duration;
 import java.util.*;
 
 public class AutomationExercise {
@@ -22,6 +29,26 @@ public class AutomationExercise {
 
     private ArrayList<String> productTitleList=new ArrayList<>();
     AutomationExercisePage autoEPage=new AutomationExercisePage();
+    static Map<String,String> infoPerson=new HashMap<>();
+
+    static {
+        Faker faker=new Faker();
+        infoPerson.put("name",faker.name().firstName());
+        infoPerson.put("email", infoPerson.get("fullName")+"@mail.com");
+        infoPerson.put("fullName",faker.name().fullName());
+        infoPerson.put("fullAddress",faker.address().fullAddress());
+        infoPerson.put("pass",faker.bothify("########"));
+        infoPerson.put("dob",faker.date().birthday().getDay()+"");
+        infoPerson.put("mob",faker.date().birthday().getMonth()+"");
+        infoPerson.put("yob",faker.date().birthday().getYear()+"");
+        infoPerson.put("lname",faker.name().lastName());
+        infoPerson.put("compName",faker.company().name());
+        infoPerson.put("countryName",faker.country().name());
+        infoPerson.put("state",faker.address().state());
+        infoPerson.put("city",faker.address().city());
+        infoPerson.put("zipcode",faker.address().zipCode());
+        infoPerson.put("phoneNum",faker.phoneNumber().phoneNumber());
+    }
     @Given("Navigate to url {string}")
     public void navigate_to_url(String string) {
         Driver.getWebDriver().navigate().to(string);
@@ -44,6 +71,7 @@ public class AutomationExercise {
         BrowserTools.scrollToElement(autoEPage.mainPageFoto);
 
     }
+
     @When("Verify {string} text is visible on screen")
     public void verify_text_is_visible_on_screen(String string) {
         Assert.assertEquals(string,autoEPage.text.get(0).getText());
@@ -68,7 +96,6 @@ public class AutomationExercise {
         }
 
     }
-
     @Given("Verify that cart page is displayed")
     public void verify_that_cart_page_is_displayed() {
         Assert.assertTrue(autoEPage.cartPage.isDisplayed());
@@ -78,11 +105,11 @@ public class AutomationExercise {
             autoEPage.checkoutButton.click();
            // BrowserTools.clickWithJavaScript(autoEPage.checkoutButton);
     }
+
     @And("Click Register Login button")
     public void clickRegisterLoginButton() {
         autoEPage.regLogButton.click();
     }
-
     @Given("Fill all details in Signup and create account")
     public void fill_all_details_in_signup_and_create_account() {
         Faker faker=new Faker();
@@ -105,13 +132,13 @@ public class AutomationExercise {
         BrowserTools.scrollToElement(autoEPage.topUserName);
         Assert.assertTrue(autoEPage.topUserName.isDisplayed());
     }
+
     @Given("Click Cart button")
     public void click_cart_button() {
         autoEPage.cartButton.click();
         //BrowserTools.clickWithJavaScript(autoEPage.cartButton);
 
     }
-
     @Given("Verify Address Details and Review Your Order")
     public void verify_address_details_and_review_your_order() {
         Assert.assertTrue(autoEPage.addressDelivery.isDisplayed());
@@ -145,6 +172,7 @@ public class AutomationExercise {
 
 
     }
+
     @Given("Click Pay and Confirm Order button")
     public void click_pay_and_confirm_order_button() {
         autoEPage.submitButton.click();
@@ -154,7 +182,6 @@ public class AutomationExercise {
     public void verify_success_message(String string) {
         Assert.assertEquals(string,autoEPage.succesMessage.getText());
     }
-
     @Given("Click Download Invoice button and verify invoice is downloaded successfully.")
     public void click_download_invoice_button_and_verify_invoice_is_downloaded_successfully() {
         autoEPage.downloadButton.click();
@@ -176,6 +203,7 @@ public class AutomationExercise {
         System.out.println(infoPerson.get("email"));
         autoEPage.deleteAccount.click();
     }
+
     @Given("Verify ACCOUNT DELETED! and click Continue button")
     public void verify_account_deleted_and_click_continue_button() {
         //Assert.assertTrue(autoEPage.accountDeleted.isDisplayed());
@@ -231,7 +259,7 @@ public class AutomationExercise {
     public void verifyUserIsNavigatedToALLPRODUCTSPageSuccessfully() {
         Assert.assertTrue(autoEPage.allProductsHeadText.isDisplayed());
         int countProduct=autoEPage.allProductList.size();//gösterilen tüm ürünlerin sayısı
-        
+
         int productCount=0;
         for (int i = 0; i < autoEPage.differentProductCount.size(); i++) {
             String str=autoEPage.differentProductCount.get(i).getText();
@@ -341,19 +369,14 @@ public class AutomationExercise {
         click_delete_account_button();
         verify_account_deleted_and_click_continue_button();
     }
-
     @And("Verify New User Signup! is visible")
     public void verifyNewUserSignupIsVisible() {
         Assert.assertTrue(autoEPage.newUserSignupMessage.isDisplayed());
     }
-    Map<String,String> infoPerson=new HashMap<>();
     @And("Enter name and email address")
     public void enterNameAndEmailAddress() {
-        Faker faker=new Faker();
         BrowserTools.scrollToElement(autoEPage.signupButton);
-        infoPerson.put("name",faker.name().firstName());
         autoEPage.nameInput.sendKeys(infoPerson.get("name"));
-        infoPerson.put("email",faker.name().firstName()+"@mail.com");
         autoEPage.emailInput.sendKeys(infoPerson.get("email"));
         //BrowserTools.clickWithJavaScript(autoEPage.signupButton);  // autoEPage.signupButton.click();
 
@@ -380,20 +403,6 @@ public class AutomationExercise {
     private void fill(){
         Actions actions= new Actions(Driver.getWebDriver());
         Random random=new Random();
-        Faker faker=new Faker();
-        infoPerson.put("fullAddress",faker.address().fullAddress());
-        infoPerson.put("pass",faker.bothify("########"));
-        infoPerson.put("dob",faker.date().birthday().getDay()+"");
-        infoPerson.put("mob",faker.date().birthday().getMonth()+"");
-        infoPerson.put("yob",faker.date().birthday().getYear()+"");
-        infoPerson.put("lname",faker.name().lastName());
-        infoPerson.put("compName",faker.company().name());
-        infoPerson.put("countryName",faker.country().name());
-        infoPerson.put("state",faker.address().state());
-        infoPerson.put("city",faker.address().city());
-        infoPerson.put("zipcode",faker.address().zipCode());
-        infoPerson.put("phoneNum",faker.phoneNumber().phoneNumber());
-
         if (random.nextBoolean()){
             actions.click(autoEPage.genderMale)
                     .sendKeys(Keys.TAB)
@@ -591,5 +600,88 @@ public class AutomationExercise {
         Assert.assertTrue(autoEPage.emailAlreadyExistMessage.isDisplayed());
     }
 
+    @And("Click on Contact Us button")
+    public void clickOnContactUsButton() {
+        autoEPage.contactUsButton.click();
+    }
 
+    @And("Verify GET IN TOUCH is visible")
+    public void verifyGETINTOUCHIsVisible() {
+        Assert.assertTrue(autoEPage.getInTouchMessage.isDisplayed());
+    }
+
+    @And("Enter name, email, subject and message")
+    public void enterNameEmailSubjectAndMessage() {
+            autoEPage.nameBoxWithContactUs.sendKeys(infoPerson.get("fullName"));
+            autoEPage.emailBoxWithContactUs.sendKeys(infoPerson.get("email"));
+            autoEPage.subjectBoxWithContactUs.sendKeys("harika bir ürün");
+            autoEPage.messageBoxWithContactUs.sendKeys("aldığım en harika ürün bu. gerçekten güzel. falan filan lsjfkjhgkdjngdk ");
+
+    }
+
+    @And("Upload file")
+    public void uploadFile() {
+        String filePath="C:\\Users\\murat\\Downloads\\"+"invoice.txt";
+        autoEPage.uploadFileButton.sendKeys(filePath);
+    }
+
+    @And("Click Submit button With Contact Us")
+    public void clickSubmitButtonWithContactUs() {
+        BrowserTools.scrollToElement(autoEPage.submitButtonWithContactUs);
+        autoEPage.submitButtonWithContactUs.click();
+    }
+
+    @And("Click OK button")
+    public void clickOKButton() {
+
+        WebDriverWait wait = new WebDriverWait(Driver.getWebDriver(), Duration.ofSeconds(5000));
+        wait.until(ExpectedConditions.alertIsPresent());
+        Driver.getWebDriver().switchTo().alert().accept();
+
+    }
+
+    @And("Verify success message Success! Your details have been submitted successfully. is visible")
+    public void verifySuccessMessageSuccessYourDetailsHaveBeenSubmittedSuccessfullyIsVisible() {
+        Assert.assertTrue(autoEPage.successMessage.isDisplayed());
+    }
+
+    @And("Click Home button and verify that landed to home page successfully")
+    public void clickHomeButtonAndVerifyThatLandedToHomePageSuccessfully() {
+        autoEPage.homeButton.click();
+        Assert.assertTrue(autoEPage.mainPageFoto.isDisplayed());
+    }
+
+    @And("Click on Test Cases button")
+    public void clickOnTestCasesButton() {
+        Driver.getWebDriver().findElement(By.xpath("//ul[contains(@class,\"nav navbar-nav\")]//li[5]")).click();
+    }
+
+    @And("Verify user is navigated to test cases page successfully")
+    public void verifyUserIsNavigatedToTestCasesPageSuccessfully() {
+        Assert.assertTrue(Driver.getWebDriver().findElement(By.xpath("//*[contains(@class,\"title text-center\")]")).isDisplayed());
+    }
+
+
+    @And("Click on View Product of first product")
+    public void clickOnViewProductOfFirstProduct() {
+        BrowserTools.scrollToElement(autoEPage.getAllProductListWiewButton.get(0));
+        autoEPage.getAllProductListWiewButton.get(0).click();
+
+    }
+
+    @And("User is landed to product detail page")
+    public void userIsLandedToProductDetailPage() {
+        Assert.assertTrue(autoEPage.productDetailPage.isDisplayed());
+    }
+
+    @And("Verify that detail detail is visible: product name, category, price, availability, condition, brand")
+    public void verifyThatDetailDetailIsVisibleProductNameCategoryPriceAvailabilityConditionBrand() {
+        Assert.assertTrue(autoEPage.productDetailName.isDisplayed());
+        Assert.assertTrue(autoEPage.productDetailPrice.isDisplayed());
+        Assert.assertTrue(autoEPage.productDetailCategory.isDisplayed());
+        for (WebElement e:autoEPage.productNCB) {
+            Assert.assertTrue(e.isDisplayed());
+        }
+
+    }
 }

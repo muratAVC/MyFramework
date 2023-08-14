@@ -149,6 +149,46 @@ public class AutomationExercisePage {
     @FindBy(xpath = "//ul[contains(@class,\"nav navbar-nav\")]//li[3]")
     public WebElement cartButton;
 
+    @FindBy(xpath = "//ul[contains(@class,\"nav navbar-nav\")]//li[8]")
+    public WebElement contactUsButton;
+
+    @FindBy(xpath = "//div[@class='product-information']")
+    public WebElement productDetailPage;
+
+    @FindBy(xpath = "//div[@class='product-information']//h2")
+    public WebElement productDetailName;
+
+    @FindBy(xpath = "//div[@class='product-information']//span//span")
+    public WebElement productDetailPrice;
+
+    @FindBy(xpath = "//div[@class='product-information']//p[1]")
+    public WebElement productDetailCategory;
+
+    @FindBy(xpath = "//div[@class='product-information']//p//b")
+    public List<WebElement> productNCB;
+
+    @FindBy(xpath = "//*[contains(@class,\"choose\")]//a")
+    public List<WebElement> getAllProductListWiewButton;
+
+    @FindBy(xpath = "//div[contains(@class,\"contact-form\")]//h2")
+    public WebElement getInTouchMessage;
+
+    @FindBy(name = "name")
+    public WebElement nameBoxWithContactUs;
+
+    @FindBy(name = "email")
+    public WebElement emailBoxWithContactUs;
+
+    @FindBy(name = "subject")
+    public WebElement subjectBoxWithContactUs;
+
+    @FindBy(id = "message")
+    public WebElement messageBoxWithContactUs;
+
+    @FindBy(name = "upload_file")
+    public WebElement uploadFileButton;
+
+
     @FindBy(xpath = "//tr[@class='cart_menu']")
     public WebElement cartPage;
 
@@ -211,6 +251,15 @@ public class AutomationExercisePage {
 
     @FindBy(id = "submit")
     public WebElement submitButton;
+
+    @FindBy(name = "submit")
+    public WebElement submitButtonWithContactUs;
+
+    @FindBy(xpath = "//div[contains(@class,\"contact-form\")]//div[2]")
+    public WebElement successMessage;
+
+    @FindBy(xpath = "//div[contains(@class,\"contact-form\")]//span")
+    public WebElement homeButton;
 
     @FindBy(xpath = "//div[contains(@class,'col-sm-9')]//p")
     public WebElement succesMessage;

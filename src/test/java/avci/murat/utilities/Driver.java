@@ -6,24 +6,35 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.edge.EdgeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
+
 import java.util.concurrent.TimeUnit;
 
 public class Driver {
 
     private Driver(){}//singelton asarım modeli gereği public değil private olacak
     private static WebDriver webDriver;//singelton asarım modeli gereği public değil private olacak
- //   private static final InheritableThreadLocal<WebDriver> driverPool =new InheritableThreadLocal<>();
+    private static final InheritableThreadLocal<WebDriver> driverPool =new InheritableThreadLocal<>();
 
     public static WebDriver getWebDriver(){
         ChromeOptions options=new ChromeOptions();
         options.addArguments("--lang=en");
 
-        if (webDriver==null){
+        if (driverPool.get()==null){
             String browserName=ConfigurationReader.getProperties("browser");
             switch (browserName){
                 case "chrome":
                     WebDriverManager.chromedriver().setup();
                     webDriver=new ChromeDriver(options);
+                    driverPool.set(webDriver);
+                    //driverPool.get().manage().window().maximize();
+                    //driverPool.get().manage().timeouts().implicitlyWait(10,TimeUnit.SECONDS);
+                    /*
+                    WebDriverManager.chromedriver().setup();
+                    WebDriver driver=new ChromeDriver(options);
+                    driverPool.set(driver);
+                    driverPool.get().manage().window().maximize();
+                    driverPool.get().manage().timeouts().implicitlyWait(10,TimeUnit.SECONDS);
+                     */
                     break;
                 case "firefox":
                     WebDriverManager.firefoxdriver().setup();
@@ -38,11 +49,13 @@ public class Driver {
         }
         webDriver.manage().window().maximize();
         webDriver.manage().timeouts().implicitlyWait(15,TimeUnit.SECONDS);
+
+        webDriver=driverPool.get();
         return webDriver;
     }
 
 
-/*
+ /*
     public static WebDriver getDriver(){
         ChromeOptions options=new ChromeOptions();
         options.addArguments("--lang=en");
@@ -72,6 +85,8 @@ public class Driver {
                         driverPool.set(new RemoteWebDriver(url,desiredCapabilities));
                         driverPool.get().manage().window().maximize();
                         driverPool.get().manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+                    } catch (MalformedURLException e) {
+                        e.printStackTrace();
                     } catch (MalformedURLException e) {
                         e.printStackTrace();
                     }

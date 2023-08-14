@@ -75,6 +75,38 @@ And Verify error Your email or password is incorrect! is visible
   And Verify error Email Address already exist! is visible
 
 
+    @AutoExCase06
+  Scenario: Automaton Exercise test case 06
+  Given Navigate to url 'http://automationexercise.com'
+  And Verify that home page is visible successfully
+  And Click on Contact Us button
+  And Verify GET IN TOUCH is visible
+  And Enter name, email, subject and message
+  And Upload file
+  And Click Submit button With Contact Us
+  And Click OK button
+  And Verify success message Success! Your details have been submitted successfully. is visible
+  And Click Home button and verify that landed to home page successfully
+
+
+@AutoExCase07
+  Scenario: Automation Exercise Test Case 7
+Given Navigate to url 'http://automationexercise.com'
+And Verify that home page is visible successfully
+And Click on Test Cases button
+And Verify user is navigated to test cases page successfully
+
+  @AutoExCase08
+    Scenario: Automation Exercise Tast case 08
+  Given Navigate to url 'http://automationexercise.com'
+  And Verify that home page is visible successfully
+  And Click on Products button
+  And Verify user is navigated to ALL PRODUCTS page successfully
+#  And The products list is visible
+  And Click on View Product of first product
+  And User is landed to product detail page
+  And Verify that detail detail is visible: product name, category, price, availability, condition, brand
+
 
 
 
