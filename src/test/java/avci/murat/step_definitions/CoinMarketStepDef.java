@@ -7,6 +7,8 @@ import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import org.junit.Assert;
 
+import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
 
@@ -35,14 +37,17 @@ public class CoinMarketStepDef {
         BrowserTools.scrollToElement(coinPage.filterButton);
         coinPage.rowFilter.click();
         if (string.equals("100")){
-            BrowserTools.waitFor(5);
-            coinPage.getRowFilterChose1.click();
+            BrowserTools.waitFor(2);
+            coinPage.rowFilterChoiser.get(0).click();
+            //coinPage.getRowFilterChose1.click();
         } else if (string.equals("50")){
-            BrowserTools.waitFor(5);
-            coinPage.getRowFilterChose2.click();
+            BrowserTools.waitFor(2);
+            coinPage.rowFilterChoiser.get(1).click();
+            //coinPage.getRowFilterChose2.click();
         } else {
-            BrowserTools.waitFor(5);
-            coinPage.getRowFilterChose3.click();
+            BrowserTools.waitFor(2);
+            coinPage.rowFilterChoiser.get(2).click();
+            //coinPage.getRowFilterChose3.click();
         }
 
         //BrowserTools.waitFor(10);
@@ -80,9 +85,10 @@ public class CoinMarketStepDef {
 
     @And("verify row count {string}")
     public void verifyRowCount(String row) {
-        BrowserTools.waitFor(5);
+        BrowserTools.waitFor(2);
         Assert.assertEquals(row,coinPage.rowFilter.getText());
-        //Assert.assertEquals(Integer.parseInt(row),Driver.getWebDriver().findElements(By.xpath("//tbody//td[2]")).size());
+        BrowserTools.waitFor(2);
+        Assert.assertEquals(Integer.parseInt(row),Driver.getWebDriver().findElements(By.xpath("//div[contains(@class,'drKFAV')]//a")).size());
         System.out.println(row+ "is selected");
     }
 
@@ -100,5 +106,35 @@ public class CoinMarketStepDef {
         }
         if (verify) Assert.assertTrue(verify);
         else Assert.assertFalse(verify);
+    }
+
+    @Given("Open {string} page")
+    public void openPage(String arg0) {
+        Driver.getWebDriver().navigate().to(arg0);
+        Assert.assertTrue(coinPage.navBar.isDisplayed());
+    }
+
+    @And("Scroll to page to element")
+    public void scrollToPageToElement() {
+        JavascriptExecutor jse=(JavascriptExecutor) Driver.getWebDriver();
+        jse.executeScript("arguments[0].scrollIntoView(true);",coinPage.bottomIcon);
+    }
+
+    @And("other steps")
+    public void otherSteps() {
+        WebElement element=Driver.getWebDriver().findElement(By.xpath("//div[contains(@class,\"fWcxPm\")]"));
+        BrowserTools.scrollToElement(element);
+        element.click();
+        WebElement element1=Driver.getWebDriver().findElement(By.xpath("//input[contains(@class,\"desktop-input\")]"));
+        element1.sendKeys("dfg");
+        //List<WebElement> element2=Driver.getWebDriver().findElements(By.xpath("//*[@id=\"tippy-2\"]//div//div//div//div//div[2]//div//div[2]//a"));
+
+        WebElement element4=Driver.getWebDriver().findElement(By.xpath("//div[contains(@class,'YlTVf')]"));
+        List<WebElement> element3=Driver.getWebDriver().findElements(By.xpath("//div[contains(@class,'drKFAV')]//a"));
+        element4.click();
+        ////div[contains(@class,'YlTVf')]
+        ////div[contains(@class,'drKFAV')]//a
+
+        System.out.println("result="+element3.size());
     }
 }

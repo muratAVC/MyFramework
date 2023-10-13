@@ -18,6 +18,8 @@ public class Driver {
     public static WebDriver getWebDriver(){
         ChromeOptions options=new ChromeOptions();
         options.addArguments("--lang=en");
+        //options.addArguments("--headless"); // Headless modu etkinleştir
+
 
         if (driverPool.get()==null){
             String browserName=ConfigurationReader.getProperties("browser");

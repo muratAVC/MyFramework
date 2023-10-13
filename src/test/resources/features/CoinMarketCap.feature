@@ -50,3 +50,10 @@ AC: The table should not display any price which is more than 20 and less than 1
   | last_name  | Smith  |
   | cell_phone | 801 888 8889  |
   Then I should see contact information for "John Smith"
+
+  @Senaryo1
+  Scenario: Coin market Cap test scenario 1
+    Given Open "https://coinmarketcap.com/" page
+    And Scroll to page to element
+    And other steps
+

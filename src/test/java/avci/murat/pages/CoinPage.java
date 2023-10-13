@@ -43,8 +43,13 @@ public class CoinPage {
     @FindBy(css = "div[class*='table-control-area']>div>div")
     public WebElement rowFilter;
 
+    //table[contains(@class,'table')]//tbody//tr
+
     @FindBy(css = "div[class*='cciXVV'] button:nth-child(1)")
     public WebElement getRowFilterChose1;
+
+    @FindBy(xpath = "//div[contains(@class,'dropdown-container')]//button")
+    public List<WebElement> rowFilterChoiser;
 
     @FindBy(css = "div[class*='cciXVV'] button:nth-child(2)")
     public WebElement getRowFilterChose2;
@@ -89,6 +94,14 @@ public class CoinPage {
     @FindBy(xpath = "//div[contains(@class,'jINBuN')]/div/div[2]/div/div")
     public List<WebElement> chooseUPList;
 
+    @FindBy(xpath = "//div[contains(@class,\"hVLGgx\")]")
+    public WebElement bottomIcon;
+
+    @FindBy(xpath = "//a[contains(@class,\"hwoLoF\")]//img")
+    public WebElement navBar;
+
+    @FindBy(xpath = "//div[contains(@class,\"fWcxPm\")]")
+    public WebElement searchBox1;
 
 
 

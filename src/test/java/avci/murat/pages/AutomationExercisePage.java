@@ -1,6 +1,7 @@
 package avci.murat.pages;
 
 import avci.murat.utilities.Driver;
+import io.cucumber.java.zh_cn.假如;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
@@ -26,12 +27,28 @@ public class AutomationExercisePage {
     @FindBy(xpath = "//*[@class='nav navbar-nav']//b")
     public WebElement userName;
 
+    @FindBy(id = "susbscribe_email")
+    public WebElement subscribeEmail;
+
+    @FindBy(id = "subscribe")
+    public WebElement subscribeButton;
+
+    @FindBy(xpath = "//div[@class='alert-success alert']")
+    public WebElement hiddenSubscribeMessage;
+
     //////////// All products Page
     @FindBy(xpath = "//*[contains(@class,'title text-center')]")
     public WebElement allProductsHeadText;
 
     @FindBy(xpath = "//*[contains(@class,'choose')]")
     public List<WebElement> allProductList;
+
+    @FindBy(xpath = "//*[@class='productinfo text-center']//a")
+    public List<WebElement> allProductAddtoCartButtonList;
+
+    @FindBy(xpath = "//*[@class='overlay-content']//h2")
+    public List<WebElement> allProductTitleList;
+
 
     @FindBy(xpath = "//*[contains(@href,'brand_products')]//span")
     public List<WebElement> differentProductCount;
@@ -74,6 +91,30 @@ public class AutomationExercisePage {
     ////////Cart Page
     @FindBy(xpath = "//td[@class='cart_description']//a")
     public List<WebElement> productInCartTitle;
+
+    @FindBy(xpath = "//td[@class='cart_price']//p")
+    public List<WebElement> productInCartPrice;
+
+    @FindBy(xpath = "//td[@class='cart_quantity']//button")
+    public List<WebElement> productInCartQuantity;
+
+    @FindBy(xpath = "//td[@class='cart_total']//p")
+    public List<WebElement> productInCartTotalPrice;
+
+
+    ///Product Details page
+
+    @FindBy(xpath = "//*[@class='product-information']")
+    public WebElement productDetailsPicture;
+
+    @FindBy(xpath = "//div[@class='product-information']//h2")
+    public WebElement productInfoDetailsTitle;
+
+    @FindBy(id = "quantity")
+    public WebElement productDetailsQuantity;
+
+    @FindBy(xpath = "//*[@class='btn btn-default cart']")
+    public WebElement addToCartButtonInProductDetailsPage;
 
 
 
@@ -143,7 +184,7 @@ public class AutomationExercisePage {
     @FindBy(xpath = "//button[contains(@class,\"btn-block\")]")
     public WebElement continueShoppingButton;
 
-    @FindBy(xpath = "//div[@class='modal-body']//p[2]")
+        @FindBy(xpath = "//div[@class='modal-body']//p[2]")
     public WebElement viewCartButton;
 
     @FindBy(xpath = "//ul[contains(@class,\"nav navbar-nav\")]//li[3]")
@@ -281,4 +322,20 @@ public class AutomationExercisePage {
 
     @FindBy(xpath = "//section[@id='form']//h2")
     public List<WebElement> loginPageMessages;
+
+    @FindBy(xpath = "//*[@class='form-control']")
+    public WebElement nameOnCreditCart;
+
+    @FindBy(id = "submit")
+    public WebElement payAndComfirmOrder;
+
+
+
+
+    @FindBy(xpath = "//div[@id=\"dismiss-button\"]//div//span")
+    public WebElement addOn1;
+
+
+
+
 }

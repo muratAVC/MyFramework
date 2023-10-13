@@ -5,12 +5,16 @@ import avci.murat.utilities.BrowserTools;
 import avci.murat.utilities.Driver;
 
 import com.github.javafaker.Faker;
+import io.cucumber.java.BeforeStep;
+import io.cucumber.java.an.E;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.When;
 
 import io.restassured.internal.common.assertion.AssertionSupport;
+import org.junit.After;
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
@@ -18,6 +22,8 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeMethod;
 
 
 import java.time.Duration;
@@ -30,6 +36,8 @@ public class AutomationExercise {
     private ArrayList<String> productTitleList=new ArrayList<>();
     AutomationExercisePage autoEPage=new AutomationExercisePage();
     static Map<String,String> infoPerson=new HashMap<>();
+
+
 
     static {
         Faker faker=new Faker();
@@ -48,6 +56,7 @@ public class AutomationExercise {
         infoPerson.put("city",faker.address().city());
         infoPerson.put("zipcode",faker.address().zipCode());
         infoPerson.put("phoneNum",faker.phoneNumber().phoneNumber());
+        infoPerson.put("CreditCartNo",faker.finance().creditCard());
     }
     @Given("Navigate to url {string}")
     public void navigate_to_url(String string) {
@@ -55,6 +64,9 @@ public class AutomationExercise {
     }
     @Given("Verify that home page is visible successfully")
     public void verify_that_home_page_is_visible_successfully() {
+
+        BrowserTools.waitFor(10);
+        //System.out.println("çalıştım 111111111111111111111111111111111111111");
         Assert.assertTrue(autoEPage.mainPageFoto.isDisplayed());
     }
     @Given("Scroll down page to bottom")
@@ -150,6 +162,17 @@ public class AutomationExercise {
     public void enter_description_in_comment_text_area_and_click_place_order() {
         autoEPage.commentArea.sendKeys("merhaba bu işi seviyorum");
         autoEPage.placeOrder.click();
+
+        Actions actions = new Actions(Driver.getWebDriver());
+        actions.sendKeys(autoEPage.nameOnCreditCart,infoPerson.get("name"))
+                .sendKeys(Keys.TAB)
+                .sendKeys(infoPerson.get("CreditCartNo"))
+                .sendKeys(Keys.TAB)
+                .sendKeys("234")
+                .sendKeys(Keys.TAB)
+                .sendKeys("05")
+                .sendKeys(Keys.TAB)
+                .sendKeys("10").perform();
 
     }
     @Given("Enter payment details Name on Card, Card Number, CVC, Expiration date")
@@ -253,6 +276,7 @@ public class AutomationExercise {
     @And("Click on Products button")
     public void clickOnProductsButton() {
         autoEPage.productsButton.click();
+
     }
 
     @And("Verify user is navigated to ALL PRODUCTS page successfully")
@@ -682,6 +706,154 @@ public class AutomationExercise {
         for (WebElement e:autoEPage.productNCB) {
             Assert.assertTrue(e.isDisplayed());
         }
+
+    }
+
+    @And("Scroll down to footer")
+    public void scrollDownToFooter() {
+        BrowserTools.scrollToElement(autoEPage.getSubcription);
+    }
+
+    @And("Verify text SUBSCRIPTION")
+    public void verifyTextSUBSCRIPTION() {
+        Assert.assertTrue(autoEPage.getSubcription.isDisplayed());
+    }
+
+    @And("Enter email address in input and click arrow button")
+    public void enterEmailAddressInInputAndClickArrowButton() {
+        autoEPage.subscribeEmail.sendKeys(BrowserTools.exelRead().get("email"));
+        autoEPage.subscribeButton.click();
+    }
+
+    @And("Verify success message You have been successfully subscribed! is visible")
+    public void verifySuccessMessageYouHaveBeenSuccessfullySubscribedIsVisible() {
+        Assert.assertTrue(autoEPage.hiddenSubscribeMessage.isDisplayed());
+    }
+
+
+    @And("Hover over first product and click Add to cart")
+    public void hover_over_first_product_and_click_add_to_cart() {
+        productTitleList.add(autoEPage.allProductTitleList.get(0).getText());
+
+        JavascriptExecutor jse=(JavascriptExecutor) Driver.getWebDriver();
+        jse.executeScript("window.scrollBy(0, 30);");
+        BrowserTools.clickWithJavaScript(autoEPage.allProductAddtoCartButtonList.get(0));
+        //autoEPage.allProductAddtoCartButtonList.get(0).click();
+        BrowserTools.waitFor(10);
+    }
+
+/*    @AfterMethod
+    public void addDefect(){
+        try {
+            if(autoEPage.addOn1.isDisplayed()){
+                autoEPage.addOn1.click();
+            }
+        } catch (Exception e)
+        {
+            System.out.println("çıkmadı namussuz");
+        }
+    }*/
+
+    @And("Click Continue Shopping button")
+    public void clickContinueShoppingButton() {
+        autoEPage.continueShoppingButton.click();
+    }
+
+    @And("Hover over second product and click Add to cart")
+    public void hoverOverSecondProductAndClickAddToCart() {
+        BrowserTools.scrollToElement(autoEPage.allProductAddtoCartButtonList.get(1));
+        productTitleList.add(autoEPage.allProductTitleList.get(1).getText());
+        autoEPage.allProductAddtoCartButtonList.get(1).click();
+    }
+
+  /*  @Given("Click View Cart button")
+    public void click_view_cart_button() {
+        autoEPage.viewCartButton.click();
+    }*/
+
+    @And("Click View Cart button")
+    public void clickViewCartButton() {
+        autoEPage.viewCartButton.click();
+    }
+
+    @And("Verify both products are added to Cart")
+    public void verifyBothProductsAreAddedToCart() {
+        int i=0;
+        for (WebElement e:autoEPage.productInCartTitle) {
+            Assert.assertEquals(productTitleList.get(i), e.getText());
+            i++;
+        }
+
+    }
+
+    @And("Verify their prices, quantity and total price")
+    public void verifyTheirPricesQuantityAndTotalPrice() {
+        for (int i = 0; i < autoEPage.productInCartTitle.size(); i++) {
+            String str=autoEPage.productInCartPrice.get(i).getText().substring(4);
+            int a=Integer.parseInt(str);
+            int b=Integer.parseInt(autoEPage.productInCartQuantity.get(i).getText());
+            int c=Integer.parseInt(autoEPage.productInCartTotalPrice.get(i).getText().substring(4));
+            Assert.assertEquals(a*b,c);
+        }
+    }
+
+    @Given("Click View Product for any product on home page")
+    public void click_view_product_for_any_product_on_home_page() {
+        BrowserTools.clickWithJavaScript(autoEPage.allPoductViewList.get(1));//restgele bir element
+        //BrowserTools.scrollToElement(autoEPage.allPoductViewList.get(1));
+//        JavascriptExecutor jse=(JavascriptExecutor) Driver.getWebDriver();
+//        jse.executeScript("window.scrollBy(0, 30);");
+//        autoEPage.allPoductViewList.get(1).click();
+
+
+    }
+
+    @Given("Verify product detail is opened")
+    public void verify_product_detail_is_opened() {
+        Assert.assertTrue(autoEPage.productDetailsPicture.isDisplayed());
+        infoPerson.put("ProductName",autoEPage.productInfoDetailsTitle.getText());
+    }
+
+    @Given("Increase quantity to {int}")
+    public void increase_quantity_to(Integer int1) {
+        Actions actions=new Actions(Driver.getWebDriver());
+        actions.keyDown(autoEPage.productDetailsQuantity,Keys.CONTROL)
+               .sendKeys("a")//bu kısım bir input box taki varolan bilgiyi silmek için kullanılır
+               .keyUp(Keys.CONTROL)
+               .sendKeys(Keys.DELETE)
+               .perform();
+        autoEPage.productDetailsQuantity.sendKeys(String.valueOf(int1));
+    }
+
+    @Given("Click Add to cart button")
+    public void click_add_to_cart_button() {
+        autoEPage.addToCartButtonInProductDetailsPage.click();
+    }
+
+    @Given("Verify that product is displayed in cart page with exact quantity")
+    public void verify_that_product_is_displayed_in_cart_page_with_exact_quantity() {
+        int i=0;
+        for (WebElement element :autoEPage.productInCartTitle) {
+            if (element.getText().equals(infoPerson.get("ProductName"))){
+                Assert.assertEquals("4",autoEPage.productInCartQuantity.get(i).getText());
+            }
+            i++;
+        }
+    }
+
+
+    @And("Enter payment details")
+    public void enterPaymentDetails() {
+        Actions actions = new Actions(Driver.getWebDriver());
+        actions.sendKeys(autoEPage.nameOnCreditCart,infoPerson.get("name"))
+                .sendKeys(Keys.TAB)
+                .sendKeys(infoPerson.get("CreditCartNo"))
+                .sendKeys(Keys.TAB)
+                .sendKeys("234")
+                .sendKeys(Keys.TAB)
+                .sendKeys("05")
+                .sendKeys(Keys.TAB)
+                .sendKeys("10").perform();
 
     }
 }
