@@ -16,4 +16,22 @@ public class GooglePage {
 
     @FindBy(xpath = "//div[@id='slim_appbar']//div//div")
     public WebElement result;
+
+
+    @FindBy(id = "identifierId")
+    public WebElement inputNameBox;
+
+    @FindBy (id = "identifierNext")
+    public WebElement nextButtonN;
+
+    @FindBy (xpath = "//*[@name='Passwd']")
+    public WebElement passBox;
+
+    @FindBy(xpath = "//*[@id=\"passwordNext\"]/div/button/span")
+    public WebElement nextButtonP;
+
+
+
+
+
 }

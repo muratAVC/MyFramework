@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.IntStream;
 
 public class DataBaseUtilities {
     private static Connection connection;
@@ -15,7 +16,7 @@ public class DataBaseUtilities {
 
     public static void createDBConnection(String url,String userN,String userP) {
         try {
-            connection= DriverManager.getConnection(url,userN,userP);
+            setConnection(DriverManager.getConnection(url,userN,userP));
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -27,7 +28,7 @@ public class DataBaseUtilities {
         String userP=ConfigurationReader.getProperties("DataBase.userPass");
 
         try {
-            connection=DriverManager.getConnection(url,userN,userP);
+            setConnection(DriverManager.getConnection(url,userN,userP));
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -35,10 +36,10 @@ public class DataBaseUtilities {
 
     public static void destroy(){
         try {
-            if (resultSet!=null) {
-                resultSet.close();
-                statement.close();
-                connection.close();
+            if (getResultSet() !=null) {
+                getResultSet().close();
+                getStatement().close();
+                getConnection().close();
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -47,23 +48,53 @@ public class DataBaseUtilities {
 
     public static void executeQuery(String query){
         try {
-            statement=connection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,ResultSet.CONCUR_READ_ONLY);
-            resultSet=statement.executeQuery(query);
+            setStatement(getConnection().createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,ResultSet.CONCUR_READ_ONLY));
+            setResultSet(getStatement().executeQuery(query));
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
 
+    public static void insertData(List<Object> user) {
+        try {
+            //PreparedStatement statement = connection.prepareStatement(importQuery);
+            //statement.setInt(1, (int)user.get(0));
+            String id= user.get(0).toString();
+            //statement.setString(2, user.get(1).toString());
+            String firstName=(String) user.get(1);
+            //statement.setString(3, user.get(2).toString());
+            String lastName=(String) user.get(2);
+            //statement.setString(4,user.get(3).toString());
+            String adress=(String) user.get(3);
+            //statement.setString(5,user.get(4).toString());
+            String city=(String) user.get(4);
+            //statement.setString(6,user.get(5).toString());
+            String category=(String) user.get(5);
+            //statement.executeUpdate();
+            String importQuery="INSERT INTO yazar (id_no, first_name, last_name, adress, city, category) VALUES ("+id+", "+firstName+", "+lastName+", "+adress+", "+city+", "+category+")";
+            System.out.println(importQuery);
+            connection.createStatement().executeUpdate(importQuery);
+
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+
+
+
+
+    }
+
+
     public static List<List<Object>> getQueryResultsetList(String query){
         executeQuery(query);
         List<List<Object>> result=new ArrayList<>();
         try {
-            ResultSetMetaData resultSetMetaData= resultSet.getMetaData();
-            while (resultSet.next()){
+            ResultSetMetaData resultSetMetaData= getResultSet().getMetaData();
+            while (getResultSet().next()){
                 List<Object> rowSet= new ArrayList<>();
                 int columnCount=resultSetMetaData.getColumnCount();
                 for (int i = 1; i <= columnCount; i++) {
-                    rowSet.add(resultSet.getObject(i));
+                    rowSet.add(getResultSet().getObject(i));
                 }
                 result.add(rowSet);
             }
@@ -81,8 +112,8 @@ public class DataBaseUtilities {
     public static int getRowCount(){
         int result=0;
         try {
-            resultSet.last();
-            result=resultSet.getRow();
+            getResultSet().last();
+            result= getResultSet().getRow();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -100,11 +131,11 @@ public class DataBaseUtilities {
         executeQuery(query);
         List<Map<String,Object>> result=new ArrayList<>();
         try {
-            ResultSetMetaData setMetaData= resultSet.getMetaData();
-            while (resultSet.next()){
+            ResultSetMetaData setMetaData= getResultSet().getMetaData();
+            while (getResultSet().next()){
                 Map<String,Object> row=new HashMap<>();
                 for (int i = 1; i < setMetaData.getColumnCount(); i++) {
-                    row.put(setMetaData.getColumnName(i),resultSet.getObject(i));
+                    row.put(setMetaData.getColumnName(i), getResultSet().getObject(i));
                 }
                 result.add(row);
             }
@@ -122,8 +153,8 @@ public class DataBaseUtilities {
         executeQuery(query);
         List<Object> result=new ArrayList<>();
         try {
-            while (resultSet.next()){
-                result.add(resultSet.getObject(column));
+            while (getResultSet().next()){
+                result.add(getResultSet().getObject(column));
             }
         }catch (SQLException e){
             e.printStackTrace();
@@ -132,9 +163,50 @@ public class DataBaseUtilities {
     }
 
     public static Object getCellValue(String query) {
-        return getQueryResultsetList(query).get(0).get(0);
+        return getQueryResultsetList(query).get(1).get(0);
     }
 
+    public static List<Object> getColumnName(String query) throws SQLException {
+        executeQuery(query);
+        List<Object> result=new ArrayList<>();
+        IntStream.rangeClosed(1, getResultSet().getMetaData().getColumnCount())
+                .mapToObj(i -> {
+                    try {
+                        return getResultSet().getObject(i);
+                    } catch (SQLException e) {
+                        throw new RuntimeException(e);
+                    }
+                })
+                .forEach(result::add);
+        /*
+        ResultSetMetaData setMetaData=resultSet.getMetaData();
+        for (int i = 1; i <= setMetaData.getColumnCount(); i++) {
+            result.add(resultSet.getObject(i));
+        }*/
+        return result;
+    }
 
+    public static Connection getConnection() {
+        return connection;
+    }
 
+    public static void setConnection(Connection connection) {
+        DataBaseUtilities.connection = connection;
+    }
+
+    public static Statement getStatement() {
+        return statement;
+    }
+
+    public static void setStatement(Statement statement) {
+        DataBaseUtilities.statement = statement;
+    }
+
+    public static ResultSet getResultSet() {
+        return resultSet;
+    }
+
+    public static void setResultSet(ResultSet resultSet) {
+        DataBaseUtilities.resultSet = resultSet;
+    }
 }

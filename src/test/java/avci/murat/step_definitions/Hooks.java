@@ -15,6 +15,12 @@ public class Hooks {
         if (scenario.isFailed()){
             BrowserTools.screenShoot(scenario);
         }
-        Driver.closeDriver();
+        //Driver.closeDriver();
+    }
+
+    @AfterStep
+    public void vaitAfterSteps(){
+        //BrowserTools.waitFor(2);
+        //System.out.println("2 saniye Bekledim");
     }
 }
