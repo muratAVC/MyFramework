@@ -15,7 +15,7 @@ public class Hooks {
         if (scenario.isFailed()){
             BrowserTools.screenShoot(scenario);
         }
-        //Driver.closeDriver();
+        Driver.closeDriver();
     }
 
     @AfterStep
